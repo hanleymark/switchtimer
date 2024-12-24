@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Switch Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .turn {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .pause-button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pause-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Switch Timer 🎮</h1>
+    <div class="turn" id="turn">Noah's turn on the Switch ⏳</div>
+    <button class="pause-button" id="pauseButton">Pause</button>
+
+    <script>
+        const turnDisplay = document.getElementById('turn');
+        const pauseButton = document.getElementById('pauseButton');
+
+        let isPaused = false;
+        let isNoahsTurn = true;
+
+        const updateTurn = () => {
+            if (!isPaused) {
+                isNoahsTurn = !isNoahsTurn;
+                turnDisplay.textContent = isNoahsTurn 
+                    ? "Noah's turn on the Switch ⏳" 
+                    : "Sam's turn on the Switch 🎮";
+            }
+        };
+
+        const togglePause = () => {
+            isPaused = !isPaused;
+            pauseButton.textContent = isPaused ? 'Resume' : 'Pause';
+        };
+
+        // Set the interval to 20 minutes (20 * 60 * 1000 ms)
+        setInterval(updateTurn, 20 * 60 * 1000);
+
+        // Attach event listener to the pause button
+        pauseButton.addEventListener('click', togglePause);
+    </script>
+</body>
+</html>
