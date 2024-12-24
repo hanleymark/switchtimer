@@ -19,6 +19,11 @@
             font-size: 2em;
             margin: 20px 0;
         }
+        .timer {
+            font-size: 1.5em;
+            color: #555;
+            margin: 10px 0;
+        }
         .pause-button {
             font-size: 1.5em;
             padding: 10px 20px;
@@ -36,21 +41,37 @@
 <body>
     <h1>🎮 Switch Timer 🎮</h1>
     <div class="turn" id="turn">Noah's turn on the Switch ⏳</div>
+    <div class="timer" id="countdown">20:00</div>
     <button class="pause-button" id="pauseButton">Pause</button>
 
     <script>
         const turnDisplay = document.getElementById('turn');
+        const countdownDisplay = document.getElementById('countdown');
         const pauseButton = document.getElementById('pauseButton');
 
         let isPaused = false;
         let isNoahsTurn = true;
+        let remainingTime = 20 * 60; // 20 minutes in seconds
 
-        const updateTurn = () => {
+        const formatTime = (seconds) => {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        };
+
+        const updateCountdown = () => {
             if (!isPaused) {
-                isNoahsTurn = !isNoahsTurn;
-                turnDisplay.textContent = isNoahsTurn 
-                    ? "Noah's turn on the Switch ⏳" 
-                    : "Sam's turn on the Switch 🎮";
+                if (remainingTime > 0) {
+                    remainingTime--;
+                    countdownDisplay.textContent = formatTime(remainingTime);
+                } else {
+                    // Switch turns when time is up
+                    isNoahsTurn = !isNoahsTurn;
+                    remainingTime = 20 * 60; // Reset time for the next turn
+                    turnDisplay.textContent = isNoahsTurn 
+                        ? "Noah's turn on the Switch ⏳" 
+                        : "Sam's turn on the Switch 🎮";
+                }
             }
         };
 
@@ -59,8 +80,8 @@
             pauseButton.textContent = isPaused ? 'Resume' : 'Pause';
         };
 
-        // Set the interval to 20 minutes (20 * 60 * 1000 ms)
-        setInterval(updateTurn, 20 * 60 * 1000);
+        // Update the countdown every second
+        setInterval(updateCountdown, 1000);
 
         // Attach event listener to the pause button
         pauseButton.addEventListener('click', togglePause);
